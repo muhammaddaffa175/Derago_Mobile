@@ -78,7 +78,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   statusBar: {
-    height: Platform.OS === "android" ? StatusBar.currentHeight -12 : 0, // Tinggi status bar khusus Android
+    height: Platform.OS === "android" && StatusBar.currentHeight
+      ? StatusBar.currentHeight - 12
+      : 0, // Periksa jika StatusBar.currentHeight terdefinisi
     backgroundColor: "#000", // Warna bar yang sama dengan header
   },
   background: {
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
+    fontFamily: "Poppins-Bold"
   },
   logoutButton: {
     paddingVertical: 8,
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    fontSize: 14,
+    fontSize: 15,
     color: "#fff",
     textAlign: "center",
     marginBottom: 20,
