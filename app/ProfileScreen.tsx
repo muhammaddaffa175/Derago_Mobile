@@ -7,9 +7,11 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  Animated,
 } from "react-native";
 import { getDatabase, ref, get } from "firebase/database";
 import { getAuth, signOut } from "firebase/auth";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 const ProfileScreen = () => {
@@ -19,6 +21,18 @@ const ProfileScreen = () => {
   const auth = getAuth();
   const db = getDatabase();
   const router = useRouter();
+
+    const [menuVisible, setMenuVisible] = useState(false);
+    const slideAnim = useState(new Animated.Value(-300))[0]; // Animasi sidebar
+  
+    const toggleMenu = () => {
+      setMenuVisible(!menuVisible);
+      Animated.timing(slideAnim, {
+        toValue: menuVisible ? -300 : 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -68,6 +82,64 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
+          {/* Navbar */}
+                  <View style={styles.navbar}>
+              <Image
+                source={require("../assets/images/logo.png")}
+                style={styles.navLogo}
+              />
+              <TouchableOpacity onPress={toggleMenu}>
+                <Ionicons name="menu-outline" size={30} color="#DAA520" />
+              </TouchableOpacity>
+            </View>
+      
+            {/* Sidebar */}
+            <Animated.View style={[styles.sidebar, { right: slideAnim }]}>
+              <TouchableOpacity onPress={toggleMenu} style={styles.closeMenu}>
+                <Ionicons name="close" size={30} color="#fff" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  router.push("/home");
+                  toggleMenu();
+                }}
+              >
+                <Ionicons name="home-outline" size={20} color="#DAA520" />
+                <Text style={styles.menuText}>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  router.push("/materi");
+                  toggleMenu();
+                }}
+              >
+                <Ionicons name="book-outline" size={20} color="#DAA520" />
+                <Text style={styles.menuText}>Materi</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  router.push("/tools");
+                  toggleMenu();
+                }}
+              >
+                <Ionicons name="construct-outline" size={20} color="#DAA520" />
+                <Text style={styles.menuText}>Tools</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => {
+                  router.push("/latihan-soal");
+                  toggleMenu();
+                }}
+              >
+                <Ionicons name="clipboard-outline" size={20} color="#DAA520" />
+                <Text style={styles.menuText}>Latihan Soal</Text>
+              </TouchableOpacity>
+            </Animated.View>
+
       <View style={styles.header}>
         <Image
           source={require("../assets/images/DERAGO_PUTIH.png")}
@@ -108,11 +180,59 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  navbar: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    height: 60,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#000",
+    paddingHorizontal: 16,
+    zIndex: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+  },
+  navLogo: {
+    width: 55,
+    height: 55,
+  },
+  sidebar: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 300,
+    backgroundColor: "#333",
+    paddingTop: 60,
+    paddingHorizontal: 16,
+    zIndex: 20,
+  },
+  closeMenu: {
+    alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#555",
+  },
+  menuText: {
+    marginLeft: 10,
+    color: "#DAA520",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
   header: {
     backgroundColor: "#000",
     height: 150,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 180,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
@@ -120,19 +240,21 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: "#333",
   },
   infoContainer: {
-    marginTop: 20,
+    marginTop: 70,
     paddingHorizontal: 20,
   },
   infoBox: {
     backgroundColor: "#f8f8f8",
-    padding: 15,
-    borderRadius: 10,
+    padding: 12,
+    borderRadius: 15,
     marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "#333",
   },
   label: {
     fontSize: 16,
