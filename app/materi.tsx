@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: "absolute",
-    top: 50,
+    top: 0,
     left: 0,
     right: 0,
     height: 60,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center", // Menjadikan teks berada di tengah secara horizontal
     marginTop: 16, // Tambahkan margin atas
-    paddingTop: 50,
+    paddingTop: 0,
   },
   subsectionTitle: {
     fontSize: 16,
