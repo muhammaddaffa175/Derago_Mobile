@@ -141,7 +141,7 @@ const questions = [
 
 export default function LatihanSoalExtreme() {
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(7); // Contoh nilai high score
+  const [highScore, setHighScore] = useState(0); // Contoh nilai high score
   const [timeLeft, setTimeLeft] = useState(6000); // Dalam detik (contoh)
   const [gameStarted, setGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
