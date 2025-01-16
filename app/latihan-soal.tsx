@@ -32,7 +32,10 @@ export default function LatihanSoal() {
         <Text style={styles.quizDescription}>
           Sudah merasa jago? Ayo kerjakan soal Quiz ini dengan level kesulitan yang lebih tinggi.
         </Text>
-        <TouchableOpacity style={styles.quizButton}>
+        <TouchableOpacity
+          style={styles.quizButton}
+          onPress={() => router.push("/latsolextreme")} // Navigasi ke halaman latsoleasy
+        >
           <Text style={styles.quizButtonText}>Mulai Extreme Quiz</Text>
         </TouchableOpacity>
       </View>
