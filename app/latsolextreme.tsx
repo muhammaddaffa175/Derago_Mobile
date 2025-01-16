@@ -169,7 +169,13 @@ export default function LatihanSoalExtreme() {
 
   const handleOptionSelect = (option: { text: string; correct: boolean }) => {
     if (option.correct) {
-        setScore(score + 1); // Tambahkan skor jika jawabannya benar
+        const newScore = score + 1; // Tambahkan skor jika jawabannya benar
+        setScore(newScore);
+
+        // Perbarui high score jika skor baru lebih besar
+        if (newScore > highScore) {
+            setHighScore(newScore);
+        }
     }
     if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -178,6 +184,7 @@ export default function LatihanSoalExtreme() {
         setGameStarted(false);
     }
 };
+
 
   return (
     <ImageBackground
