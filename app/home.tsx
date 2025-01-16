@@ -9,31 +9,45 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons"; // Gunakan Ionicons untuk icon
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Home() {
   const router = useRouter();
 
+  // Fungsi Logout dengan konfirmasi
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Apakah Anda yakin ingin logout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Logout", onPress: () => router.replace("/") },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#000" barStyle="light-content" />
-      {/* Status Bar Visual Bar */}
+      {/* Status Bar Visual */}
       <View style={styles.statusBar} />
       <ImageBackground
         source={require("../assets/images/background.png")}
         style={styles.background}
       >
+        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>DERAGO</Text>
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={() => router.push("/")}
-          >
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Konten Utama */}
         <View style={styles.container}>
           <Image
             source={require("../assets/images/logo.png")}
@@ -93,8 +107,8 @@ const styles = StyleSheet.create({
     height:
       Platform.OS === "android" && StatusBar.currentHeight
         ? StatusBar.currentHeight - 12
-        : 0, // Periksa jika StatusBar.currentHeight terdefinisi
-    backgroundColor: "#000", // Warna bar yang sama dengan header
+        : 0,
+    backgroundColor: "#000",
   },
   background: {
     flex: 1,
@@ -167,7 +181,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 5, // Efek bayangan untuk Android
+    elevation: 5,
   },
   buttonContent: {
     flexDirection: "row",
