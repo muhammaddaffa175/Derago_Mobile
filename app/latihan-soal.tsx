@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
+import { useRouter } from "expo-router"; // Tambahkan ini
 
 export default function LatihanSoal() {
+  const router = useRouter(); // Inisialisasi router
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -15,7 +18,10 @@ export default function LatihanSoal() {
         <Text style={styles.quizDescription}>
           Ayo uji pemahaman kamu dengan mengerjakan soal Quiz ini.
         </Text>
-        <TouchableOpacity style={styles.quizButton}>
+        <TouchableOpacity
+          style={styles.quizButton}
+          onPress={() => router.push("/latsoleasy")} // Navigasi ke halaman latsoleasy
+        >
           <Text style={styles.quizButtonText}>Mulai Easy Quiz</Text>
         </TouchableOpacity>
       </View>
