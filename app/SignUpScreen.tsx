@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -11,15 +11,15 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-} from 'react-native';
-import { useAuth } from '../contexts/AuthContext';
-import { useRouter } from 'expo-router';
+} from "react-native";
+import { useAuth } from "../contexts/AuthContext";
+import { useRouter } from "expo-router";
 
 const SignUpScreen = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
@@ -27,29 +27,29 @@ const SignUpScreen = () => {
   const handleSignUp = async () => {
     // Validasi input
     if (!name || !phone || !email || !password) {
-      Alert.alert('Error', 'Semua kolom harus diisi.');
+      Alert.alert("Error", "Semua kolom harus diisi.");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Email tidak valid.');
+      Alert.alert("Error", "Email tidak valid.");
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password harus memiliki minimal 6 karakter.');
+      Alert.alert("Error", "Password harus memiliki minimal 6 karakter.");
       return;
     }
 
     setLoading(true);
 
     try {
-      await register(email, password); // Panggil fungsi register dari AuthContext
-      Alert.alert('Success', 'Akun berhasil dibuat!');
-      router.replace('/home'); // Arahkan ke halaman home
+      await register(email, password, name, phone); // Kirim `name` dan `phone` ke fungsi register
+      Alert.alert("Success", "Akun berhasil dibuat!");
+      router.replace("/home"); // Arahkan ke halaman home
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      Alert.alert("Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -58,19 +58,17 @@ const SignUpScreen = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.logoContainer}>
-          {/* Gambar Header */}
-          <Image source={require('../assets/images/register.png')} style={styles.image} />
+          <Image source={require("../assets/images/register.png")} style={styles.image} />
           <Text style={styles.title}>Sign up</Text>
         </View>
 
-        {/* Input Name */}
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Name"
@@ -80,7 +78,6 @@ const SignUpScreen = () => {
           />
         </View>
 
-        {/* Input Phone */}
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="No HP"
@@ -91,7 +88,6 @@ const SignUpScreen = () => {
           />
         </View>
 
-        {/* Input Email */}
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -103,7 +99,6 @@ const SignUpScreen = () => {
           />
         </View>
 
-        {/* Input Password */}
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Password"
@@ -114,7 +109,6 @@ const SignUpScreen = () => {
           />
         </View>
 
-        {/* Button Sign Up */}
         <TouchableOpacity
           style={[styles.button, loading && styles.disabledButton]}
           onPress={handleSignUp}
@@ -127,10 +121,9 @@ const SignUpScreen = () => {
           )}
         </TouchableOpacity>
 
-        {/* Link to Login */}
         <Text style={styles.switchText}>
-          Sudah punya Akun?{' '}
-          <Text style={styles.link} onPress={() => router.push('/LoginScreen')}>
+          Sudah punya Akun?{" "}
+          <Text style={styles.link} onPress={() => router.push("/LoginScreen")}>
             Sign In
           </Text>
         </Text>
@@ -142,16 +135,16 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 30,
   },
   image: {
@@ -161,61 +154,61 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
   },
   inputContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 15,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: "#f3f3f3",
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    elevation: 2, // Untuk Android
+    elevation: 2,
   },
   input: {
     flex: 1,
     padding: 10,
     fontSize: 16,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
   },
   button: {
-    backgroundColor: '#000',
+    backgroundColor: "#000",
     borderRadius: 10,
     paddingVertical: 15,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginTop: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    elevation: 2, // Untuk Android
+    elevation: 2,
   },
   disabledButton: {
-    backgroundColor: '#888',
+    backgroundColor: "#888",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Regular',
+    fontWeight: "bold",
+    fontFamily: "Poppins-Regular",
   },
   switchText: {
     marginTop: 20,
     fontSize: 14,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
   },
   link: {
-    color: '#0000ff',
-    textDecorationLine: 'underline',
-    fontFamily: 'Poppins-Bold',
+    color: "#0000ff",
+    textDecorationLine: "underline",
+    fontFamily: "Poppins-Bold",
   },
 });
 

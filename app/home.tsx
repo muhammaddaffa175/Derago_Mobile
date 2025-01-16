@@ -9,7 +9,6 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
-  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,23 +16,9 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Home() {
   const router = useRouter();
 
-  // Fungsi Logout dengan konfirmasi
-  const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Apakah Anda yakin ingin logout?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Logout", onPress: () => router.replace("/") },
-      ],
-      { cancelable: true }
-    );
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#000" barStyle="light-content" />
-      {/* Status Bar Visual */}
       <View style={styles.statusBar} />
       <ImageBackground
         source={require("../assets/images/background.png")}
@@ -42,8 +27,11 @@ export default function Home() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>DERAGO</Text>
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-            <Text style={styles.logoutButtonText}>Logout</Text>
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() => router.push("/ProfileScreen")} // Arahkan ke ProfileScreen
+          >
+            <Text style={styles.profileButtonText}>Profile</Text>
           </TouchableOpacity>
         </View>
 
@@ -60,7 +48,6 @@ export default function Home() {
             latihan soal terkait deret aritmatika dan geometri.
           </Text>
 
-          {/* Button Materi */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/materi")}
@@ -71,7 +58,6 @@ export default function Home() {
             </View>
           </TouchableOpacity>
 
-          {/* Button Tools */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/tools")}
@@ -82,7 +68,6 @@ export default function Home() {
             </View>
           </TouchableOpacity>
 
-          {/* Button Latihan Soal */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/latihan-soal")}
@@ -130,13 +115,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "Poppins-Bold",
   },
-  logoutButton: {
+  profileButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,
     backgroundColor: "#fff",
     borderRadius: 5,
   },
-  logoutButtonText: {
+  profileButtonText: {
     color: "#000",
     fontSize: 14,
     fontWeight: "bold",
