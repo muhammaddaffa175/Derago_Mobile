@@ -11,6 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"; // Gunakan Ionicons untuk icon
 
 export default function Home() {
   const router = useRouter();
@@ -44,27 +45,38 @@ export default function Home() {
             Website ini menyediakan penjelasan materi, alat bantu hitung, dan
             latihan soal terkait deret aritmatika dan geometri.
           </Text>
-          <Text style={styles.description}>
-            Sebuah website untuk membantu siswa dalam mempelajari salah satu
-            materi dalam matematika, yaitu deret aritmatika dan geometri.
-          </Text>
+
+          {/* Button Materi */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/materi")}
           >
-            <Text style={styles.buttonText}>Materi</Text>
+            <View style={styles.buttonContent}>
+              <Ionicons name="book-outline" size={24} color="#000" />
+              <Text style={styles.buttonText}>Materi</Text>
+            </View>
           </TouchableOpacity>
+
+          {/* Button Tools */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/tools")}
           >
-            <Text style={styles.buttonText}>Tools</Text>
+            <View style={styles.buttonContent}>
+              <Ionicons name="construct-outline" size={24} color="#000" />
+              <Text style={styles.buttonText}>Tools</Text>
+            </View>
           </TouchableOpacity>
+
+          {/* Button Latihan Soal */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => router.push("/latihan-soal")}
           >
-            <Text style={styles.buttonText}>Latihan Soal</Text>
+            <View style={styles.buttonContent}>
+              <Ionicons name="clipboard-outline" size={24} color="#000" />
+              <Text style={styles.buttonText}>Latihan Soal</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -78,9 +90,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   statusBar: {
-    height: Platform.OS === "android" && StatusBar.currentHeight
-      ? StatusBar.currentHeight - 12
-      : 0, // Periksa jika StatusBar.currentHeight terdefinisi
+    height:
+      Platform.OS === "android" && StatusBar.currentHeight
+        ? StatusBar.currentHeight - 12
+        : 0, // Periksa jika StatusBar.currentHeight terdefinisi
     backgroundColor: "#000", // Warna bar yang sama dengan header
   },
   background: {
@@ -101,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
-    fontFamily: "Poppins-Bold"
+    fontFamily: "Poppins-Bold",
   },
   logoutButton: {
     paddingVertical: 8,
@@ -145,13 +158,23 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#fff",
     paddingVertical: 15,
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     borderRadius: 10,
     marginVertical: 10,
     width: "80%",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5, // Efek bayangan untuk Android
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   buttonText: {
+    marginLeft: 10,
     color: "#000",
     fontSize: 16,
     fontWeight: "bold",

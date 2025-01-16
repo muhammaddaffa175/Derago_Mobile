@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'expo-router'; // Gunakan useRouter untuk navigasi
+
 
 const SignUpScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { register } = useAuth();
+  const router = useRouter(); // Inisialisasi router untuk navigasi
 
   const handleSignUp = async () => {
     try {
       await register(email, password);
       Alert.alert('Success', 'Account created successfully!');
-      navigation.navigate('Login');
+      router.navigate('/home');
     } catch (error: any) {
       Alert.alert('Error', error.message);
     }
@@ -34,7 +37,7 @@ const SignUpScreen = ({ navigation }: any) => {
         style={styles.input}
       />
       <Button title="Sign Up" onPress={handleSignUp} />
-      <Text onPress={() => navigation.navigate('Login')} style={styles.link}>
+      <Text onPress={() => router.navigate('/LoginScreen')} style={styles.link}>
         Already have an account? Login
       </Text>
     </View>
