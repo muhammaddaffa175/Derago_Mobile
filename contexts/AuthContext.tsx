@@ -15,7 +15,7 @@ type UserType = {
   name?: string;
   phone?: string;
   last_login?: string;
-  highScore?: number; // Tambahkan highScore
+  highScore?: number;
 };
 
 type AuthContextType = {
@@ -53,29 +53,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     const result = await signInWithEmailAndPassword(auth, email, password);
     const userRef = ref(db, `users/${result.user.uid}`);
-    await set(userRef, { last_login: new Date().toISOString() });
-
     const snapshot = await get(userRef);
+
     if (snapshot.exists()) {
       setUser({ uid: result.user.uid, email: result.user.email, ...snapshot.val() });
     } else {
       setUser({ uid: result.user.uid, email: result.user.email });
     }
+
+    // Perbarui waktu login terakhir
+    await set(userRef, { ...snapshot.val(), last_login: new Date().toISOString() });
   };
 
   const register = async (email: string, password: string, name: string, phone: string) => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const userRef = ref(db, `users/${result.user.uid}`);
-    await set(userRef, {
-      name,
-      nohp: phone,
-      email: result.user.email,
-      last_login: new Date().toISOString(),
-      highScore: 0, // Set highScore awal menjadi 0
-    });
+    const initialData = {
+        name,
+        nohp: phone, // Pastikan konsisten dengan struktur di ProfileScreen
+        last_login: new Date().toISOString(),
+        highScore: 0,
+    };
 
-    setUser({ uid: result.user.uid, email: result.user.email, name, phone, highScore: 0 });
-  };
+    await set(userRef, { ...initialData, email: result.user.email });
+    setUser({ uid: result.user.uid, email: result.user.email, ...initialData });
+};
+
 
   const logout = async () => {
     await signOut(auth);
@@ -91,10 +94,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const currentHighScore = currentData.highScore || 0;
 
         if (newHighScore > currentHighScore) {
-          await set(userRef, {
-            ...currentData,
-            highScore: newHighScore,
-          });
+          const updatedData = { ...currentData, highScore: newHighScore };
+          await set(userRef, updatedData);
           setUser({ ...user, highScore: newHighScore });
         }
       }

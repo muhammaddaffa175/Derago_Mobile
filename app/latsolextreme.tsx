@@ -191,14 +191,16 @@ export default function LatihanSoalExtreme() {
   const handleFinishQuiz = async () => {
     setGameStarted(false);
     Alert.alert("Quiz Completed!", `Your score: ${score}`);
+
+    // Perbarui high score jika skor saat ini lebih tinggi
     if (user) {
-      try {
-        await updateHighScore(score); // Panggil fungsi untuk memperbarui highScore
-      } catch (error) {
-        Alert.alert("Error", "Failed to update high score.");
-      }
+        try {
+            await updateHighScore(score);
+        } catch (error) {
+            Alert.alert("Error", "Failed to update high score.");
+        }
     }
-  };
+};
 
   return (
     <ImageBackground

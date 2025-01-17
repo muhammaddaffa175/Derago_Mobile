@@ -38,21 +38,23 @@ const ProfileScreen = () => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
       if (user) {
-        const userRef = ref(db, `users/${user.uid}`);
-        const snapshot = await get(userRef);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          setUserData({
-            ...data,
-            highScore: data.highScore || 0, // Default highScore ke 0 jika tidak ada
-          });
-        }
+          const userRef = ref(db, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+          if (snapshot.exists()) {
+              setUserData({
+                  ...snapshot.val(),
+                  highScore: snapshot.val().highScore || 0, // Default ke 0 jika tidak ada
+                  nohp: snapshot.val().nohp || "-", // Pastikan nohp ada atau set default "-"
+              });
+          }
       }
       setLoading(false);
-    };
+  };
+  
 
     fetchUserData();
-  }, []);
+}, []);
+
 
   const handleLogout = async () => {
     Alert.alert(
