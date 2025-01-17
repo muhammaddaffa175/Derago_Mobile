@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   link: {
     color: '#0000ff',
     textDecorationLine: 'underline',
+    
     fontFamily: 'Poppins-Bold',
   },
 });
