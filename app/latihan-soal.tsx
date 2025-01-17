@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Animated, } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Animated, ImageBackground, } from "react-native";
 import { useRouter } from "expo-router"; // Tambahkan ini
 import { Ionicons } from "@expo/vector-icons";
 
@@ -19,6 +19,11 @@ export default function LatihanSoal() {
     };
 
   return (
+    <ImageBackground 
+    source={require("../assets/images/background.png")} 
+    style={styles.background} 
+    resizeMode="cover"
+  >
     <ScrollView style={styles.container}>
         {/* Navbar */}
       <View style={styles.navbar}>
@@ -74,7 +79,8 @@ export default function LatihanSoal() {
           <Text style={styles.menuText}>Latihan Soal</Text>
         </TouchableOpacity>
       </Animated.View>
-
+      
+      <Text style={styles.title}>Latihan Soal</Text>
       {/* Easy Quiz Section */}
       <View style={styles.quizContainer}>
         <Text style={styles.quizTitle}>Easy Quiz</Text>
@@ -103,17 +109,22 @@ export default function LatihanSoal() {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
   navbar: {
     position: "absolute",
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     height: 60,
@@ -131,7 +142,7 @@ const styles = StyleSheet.create({
   sidebar: {
     position: "absolute",
     top: 0,
-    bottom: 0,
+    bottom: -1000,
     width: 300,
     backgroundColor: "#333",
     paddingTop: 60,
@@ -155,33 +166,46 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 90,
+    marginBottom: 18,
+    textAlign: "center",
+    color: "#333",
+    paddingTop: 50,
+  },
   quizContainer: {
-    borderWidth: 1,
-    borderColor: "#000",
-    borderRadius: 8,
+    margin: 16,
     padding: 16,
-    marginBottom: 16,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    borderColor: "#555",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   quizTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "#000",
+    color: "#1e1e2f",
   },
   quizDescription: {
     fontSize: 14,
-    color: "#000",
+    color: "#555",
     marginBottom: 16,
   },
   quizButton: {
     backgroundColor: "#007BFF",
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
   },
   quizButtonText: {
     color: "#fff",
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });

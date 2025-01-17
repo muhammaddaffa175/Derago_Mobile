@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: "absolute",
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     height: 60,
@@ -217,15 +217,6 @@ const styles = StyleSheet.create({
     marginTop: 70,
     paddingHorizontal: 16,
   },
-  header: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-  },
   section: {
     marginVertical: 16,
     padding: 16,
@@ -236,7 +227,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 4,
-    paddingTop: 32,
+    paddingTop: 80,
   },
   sectionTitle: {
     fontSize: 20,

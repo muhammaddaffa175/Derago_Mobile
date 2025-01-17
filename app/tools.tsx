@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: "absolute",
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     height: 60,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     textAlign: "center",
     color: "#000",
-    paddingTop: 5,
+    paddingTop: 50,
   },
   section: {
     marginVertical: 16,
