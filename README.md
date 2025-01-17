@@ -1,4 +1,5 @@
 # II3140 - Web and Mobile App Development 
+DERAGO! - Virtual Lab berbasis aplikasi yang menyediakan layanan pembelajaran materi deret aritmatika dan geometri
 
 # Kelompok 6:
 1. Muhammad Daffa Kusuma Atmaja 18222108
