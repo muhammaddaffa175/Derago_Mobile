@@ -1,16 +1,79 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Animated, } from "react-native";
 import { useRouter } from "expo-router"; // Tambahkan ini
+import { Ionicons } from "@expo/vector-icons";
+
 
 export default function LatihanSoal() {
-  const router = useRouter(); // Inisialisasi router
+      const router = useRouter();
+
+    const [menuVisible, setMenuVisible] = useState(false);
+    const slideAnim = useState(new Animated.Value(-300))[0]; // Sidebar animasi  
+    const toggleMenu = () => {
+      setMenuVisible(!menuVisible);
+      Animated.timing(slideAnim, {
+        toValue: menuVisible ? -300 : 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    };
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require("../assets/images/logo.png")} style={styles.logo} />
-        <Text style={styles.headerText}>LATIHAN</Text>
+        {/* Navbar */}
+      <View style={styles.navbar}>
+        <Image source={require("../assets/images/logo.png")} style={styles.navLogo} />
+        <TouchableOpacity onPress={toggleMenu}>
+          <Ionicons name="menu-outline" size={30} color="#DAA520" />
+        </TouchableOpacity>
       </View>
+
+      {/* Sidebar */}
+      <Animated.View style={[styles.sidebar, { right: slideAnim }]}>
+        <TouchableOpacity onPress={toggleMenu} style={styles.closeMenu}>
+          <Ionicons name="close" size={30} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/home");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="home-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/materi");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="book-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Materi</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/tools");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="construct-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Tools</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/latihan-soal");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="clipboard-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Latihan Soal</Text>
+        </TouchableOpacity>
+      </Animated.View>
 
       {/* Easy Quiz Section */}
       <View style={styles.quizContainer}>
@@ -47,22 +110,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 16,
   },
-  header: {
+  navbar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#000",
+    paddingHorizontal: 16,
+    zIndex: 10,
+  },
+  navLogo: {
+    width: 55,
+    height: 55,
+  },
+  sidebar: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 300,
+    backgroundColor: "#333",
+    paddingTop: 60,
+    paddingHorizontal: 16,
+    zIndex: 20,
+  },
+  closeMenu: {
+    alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 16,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#555",
   },
-  logo: {
-    width: 40,
-    height: 40,
-    marginRight: 8,
-  },
-  headerText: {
-    fontSize: 24,
+  menuText: {
+    marginLeft: 10,
+    color: "#DAA520",
+    fontSize: 16,
     fontWeight: "bold",
-    color: "#000",
   },
   quizContainer: {
     borderWidth: 1,
