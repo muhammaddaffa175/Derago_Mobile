@@ -22,17 +22,17 @@ const ProfileScreen = () => {
   const db = getDatabase();
   const router = useRouter();
 
-    const [menuVisible, setMenuVisible] = useState(false);
-    const slideAnim = useState(new Animated.Value(-300))[0]; // Animasi sidebar
-  
-    const toggleMenu = () => {
-      setMenuVisible(!menuVisible);
-      Animated.timing(slideAnim, {
-        toValue: menuVisible ? -300 : 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    };
+  const [menuVisible, setMenuVisible] = useState(false);
+  const slideAnim = useState(new Animated.Value(-300))[0]; // Animasi sidebar
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+    Animated.timing(slideAnim, {
+      toValue: menuVisible ? -300 : 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +41,11 @@ const ProfileScreen = () => {
         const userRef = ref(db, `users/${user.uid}`);
         const snapshot = await get(userRef);
         if (snapshot.exists()) {
-          setUserData(snapshot.val());
+          const data = snapshot.val();
+          setUserData({
+            ...data,
+            highScore: data.highScore || 0, // Default highScore ke 0 jika tidak ada
+          });
         }
       }
       setLoading(false);
@@ -59,8 +63,13 @@ const ProfileScreen = () => {
         {
           text: "Logout",
           onPress: async () => {
-            await signOut(auth);
-            router.replace("/"); // Kembali ke halaman login
+            try {
+              await signOut(auth); // Keluar dari Firebase Auth
+              router.replace("/LoginScreen"); // Navigasi ke halaman login
+            } catch (error) {
+              console.error("Logout error:", error);
+              Alert.alert("Error", "Terjadi kesalahan saat logout.");
+            }
           },
         },
       ],
@@ -82,70 +91,73 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-          {/* Navbar */}
-                  <View style={styles.navbar}>
-              <Image
-                source={require("../assets/images/logo.png")}
-                style={styles.navLogo}
-              />
-              <TouchableOpacity onPress={toggleMenu}>
-                <Ionicons name="menu-outline" size={30} color="#DAA520" />
-              </TouchableOpacity>
-            </View>
-      
-            {/* Sidebar */}
-            <Animated.View style={[styles.sidebar, { right: slideAnim }]}>
-              <TouchableOpacity onPress={toggleMenu} style={styles.closeMenu}>
-                <Ionicons name="close" size={30} color="#fff" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={() => {
-                  router.push("/home");
-                  toggleMenu();
-                }}
-              >
-                <Ionicons name="home-outline" size={20} color="#DAA520" />
-                <Text style={styles.menuText}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={() => {
-                  router.push("/materi");
-                  toggleMenu();
-                }}
-              >
-                <Ionicons name="book-outline" size={20} color="#DAA520" />
-                <Text style={styles.menuText}>Materi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={() => {
-                  router.push("/tools");
-                  toggleMenu();
-                }}
-              >
-                <Ionicons name="construct-outline" size={20} color="#DAA520" />
-                <Text style={styles.menuText}>Tools</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={() => {
-                  router.push("/latihan-soal");
-                  toggleMenu();
-                }}
-              >
-                <Ionicons name="clipboard-outline" size={20} color="#DAA520" />
-                <Text style={styles.menuText}>Latihan Soal</Text>
-              </TouchableOpacity>
-            </Animated.View>
+      {/* Navbar */}
+      <View style={styles.navbar}>
+        <Image
+          source={require("../assets/images/logo.png")}
+          style={styles.navLogo}
+        />
+        <TouchableOpacity onPress={toggleMenu}>
+          <Ionicons name="menu-outline" size={30} color="#DAA520" />
+        </TouchableOpacity>
+      </View>
 
+      {/* Sidebar */}
+      <Animated.View style={[styles.sidebar, { right: slideAnim }]}>
+        <TouchableOpacity onPress={toggleMenu} style={styles.closeMenu}>
+          <Ionicons name="close" size={30} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/home");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="home-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/materi");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="book-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Materi</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/tools");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="construct-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Tools</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => {
+            router.push("/latihan-soal");
+            toggleMenu();
+          }}
+        >
+          <Ionicons name="clipboard-outline" size={20} color="#DAA520" />
+          <Text style={styles.menuText}>Latihan Soal</Text>
+        </TouchableOpacity>
+      </Animated.View>
+
+      {/* Header */}
       <View style={styles.header}>
         <Image
           source={require("../assets/images/DERAGO_PUTIH.png")}
           style={styles.avatar}
         />
       </View>
+
+      {/* Info Box */}
       <View style={styles.infoContainer}>
         <View style={styles.infoBox}>
           <Text style={styles.label}>Nama</Text>
@@ -165,11 +177,15 @@ const ProfileScreen = () => {
             {new Date(userData.last_login).toLocaleString()}
           </Text>
         </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.label}>High Score</Text>
+          <Text style={styles.value}>{userData.highScore}</Text>
+        </View>
       </View>
 
       {/* Tombol Logout */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText} onPress={() => router.push("/LoginScreen")}>Logout</Text>
+        <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
@@ -226,7 +242,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-
   header: {
     backgroundColor: "#000",
     height: 150,
@@ -289,5 +304,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
 
 export default ProfileScreen;
