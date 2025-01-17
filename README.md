@@ -1,4 +1,4 @@
-II3140 - Web and Mobile App Development
+* II3140 - Web and Mobile App Development 
 
 Kelompok 6:
 1. Muhammad Daffa Kusuma Atmaja
