@@ -19,11 +19,7 @@ export default function LatihanSoal() {
     };
 
   return (
-    <ImageBackground 
-    source={require("../assets/images/background.png")} 
-    style={styles.background} 
-    resizeMode="cover"
-  >
+
     <ScrollView style={styles.container}>
         {/* Navbar */}
       <View style={styles.navbar}>
@@ -109,15 +105,10 @@ export default function LatihanSoal() {
         </TouchableOpacity>
       </View>
     </ScrollView>
-    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: "#000",
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",

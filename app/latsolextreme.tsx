@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 130,
+    height: 130,
     resizeMode: "contain",
   },
   quizContainer: {

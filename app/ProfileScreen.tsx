@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: "absolute",
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     height: 60,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     height: 150,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 140,
+    paddingTop: 180,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
